@@ -7,6 +7,8 @@ import "./App.css";
 function App() {
   const [todos, setTodos] = useState([]);
   const [cups, setCups] = useState([]);
+  const [activeCup, setActiveCup] = useState(0);
+  const [quantitySetting, setQuantitySetting] = useState(2);
   const todoLength = 3;
   const cupsLength = 4;
 
@@ -44,25 +46,23 @@ function App() {
   };
 
   const handleClick = type => {
-    //TODO if object in array has quantity = 0, get object and add props
-    //TODO if there is no empty object available, ignore click
-    if (cups.length < 4) {
-      setCups(cups => {
-        return [
-          ...cups,
-          {
-            quantity: 1,
-            type: type
-          }
-        ];
-      });
-    }
+    //change quantity between 1 and 2
+    quantitySetting === 2 ? setQuantitySetting(1) : setQuantitySetting(2);
+
+    setCups(cups => {
+      const currentCup = {
+        quantity: quantitySetting,
+        type: type
+      };
+      cups[activeCup] = currentCup;
+      return [...cups];
+    });
   };
 
   return (
     <React.Fragment>
       <Todolist todos={todos} />
-      <Coffeemachine cups={cups} />
+      <Coffeemachine cups={cups} activeCup={activeCup} />
       <br />
       <Controlpanel handleClick={handleClick} />
     </React.Fragment>
