@@ -6,13 +6,13 @@ import "./App.css";
 
 function App() {
   const [todos, setTodos] = useState([]);
+  const [cups, setCups] = useState([]);
   const todoLength = 3;
 
   useEffect(() => {
     let i = 0;
     while (i < todoLength) {
       setTodos(todos => {
-        console.log([...todos, randomizer()]);
         return [...todos, randomizer()];
       });
       i++;
@@ -29,12 +29,26 @@ function App() {
     };
   };
 
+  const handleClick = type => {
+    if (cups.length < 4) {
+      setCups(cups => {
+        return [
+          ...cups,
+          {
+            quantity: 1,
+            type: type
+          }
+        ];
+      });
+    }
+  };
+
   return (
     <React.Fragment>
       <Todolist todos={todos} />
-      <Coffeemachine />
+      <Coffeemachine cups={cups} />
       <br />
-      <Controlpanel />
+      <Controlpanel handleClick={handleClick} />
     </React.Fragment>
   );
 }
