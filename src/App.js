@@ -26,8 +26,11 @@ function App() {
         return [
           ...cups,
           {
+            id: j++, //TODO fix wrong counter
+            key: j++,
             quantity: 0,
-            type: null
+            type: null,
+            running: false
           }
         ];
       });
@@ -35,6 +38,7 @@ function App() {
     }
   }, []);
 
+  //generate todos
   const randomizer = () => {
     const types = ["coffee", "chocolate", "sugar"];
     const randomQuantity = Math.floor(Math.random() * 2) + 1;
@@ -45,6 +49,7 @@ function App() {
     };
   };
 
+  //handle ControlPanel Button
   const handleClick = type => {
     //change quantity between 1 and 2
     quantitySetting === 2 ? setQuantitySetting(1) : setQuantitySetting(2);
@@ -54,12 +59,20 @@ function App() {
         quantity: quantitySetting,
         type: type
       };
-      cups[activeCup] = currentCup;
+      cups[activeCup] = { ...cups[activeCup], ...currentCup };
       return [...cups];
     });
   };
 
   const handleStartCup = () => {
+    //start current cup by setting running to true
+    setCups(cups => {
+      const currentCup = { ...cups[activeCup], running: true };
+      cups[activeCup] = currentCup;
+      return [...cups];
+    });
+
+    //reset quantity and set next empty cup to active
     setQuantitySetting(1);
     const nextEmpty = cups.find(cup => cup.quantity === 0);
     const index = cups.indexOf(nextEmpty);
