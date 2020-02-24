@@ -8,7 +8,7 @@ function App() {
   const [todos, setTodos] = useState([]);
   const [cups, setCups] = useState([]);
   const [activeCup, setActiveCup] = useState(0);
-  const [quantitySetting, setQuantitySetting] = useState(2);
+  const [quantitySetting, setQuantitySetting] = useState(1);
   const todoLength = 3;
   const cupsLength = 4;
 
@@ -59,10 +59,21 @@ function App() {
     });
   };
 
+  const handleStartCup = () => {
+    setQuantitySetting(1);
+    const nextEmpty = cups.find(cup => cup.quantity === 0);
+    const index = cups.indexOf(nextEmpty);
+    setActiveCup(index);
+  };
+
   return (
     <React.Fragment>
       <Todolist todos={todos} />
-      <Coffeemachine cups={cups} activeCup={activeCup} />
+      <Coffeemachine
+        cups={cups}
+        activeCup={activeCup}
+        handleStartCup={handleStartCup}
+      />
       <br />
       <Controlpanel handleClick={handleClick} />
     </React.Fragment>
