@@ -1,9 +1,12 @@
 import React from 'react';
+import './Controlpanel.css'
 
 export default function Controlpanel() {
     return (
-      <React.Fragment>
-        <div>Tasten</div>
-      </React.Fragment>
+      <div className="panel">
+        <button className="controlbutton" type="button">Kaffee</button>
+        <button className="controlbutton" type="button">Schokolade</button>
+        <button className="controlbutton" type="button">Zucker</button>
+      </div>
     );
   }

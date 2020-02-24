@@ -1,9 +1,10 @@
 import React from 'react';
+import './Cup.css'
 
 export default function Cup() {
     return (
       <React.Fragment>
-        <div>Eine Tasse</div>
+        <div className="cup">Eine Tasse</div>
       </React.Fragment>
     );
   }

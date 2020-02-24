@@ -1,0 +1,9 @@
+.panel {
+    width: 500px;
+    height: 50px;
+    background-color: rgb(163, 162, 162);
+}
+
+.controlbutton {
+ display: inline;   
+}

@@ -9,6 +9,7 @@ function App() {
     <React.Fragment>
       <Todolist />
       <Coffeemachine />
+      <br />
       <Controlpanel />
     </React.Fragment>
   );
