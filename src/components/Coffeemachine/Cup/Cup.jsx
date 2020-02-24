@@ -3,9 +3,12 @@ import "./Cup.css";
 
 export default function Cup({ quantity, type }) {
   return (
-    <div className="cup">
-      <p>{quantity}</p>
-      <p>{type}</p>
-    </div>
+    <React.Fragment>
+      <div className="startButton"></div>
+      <div className="cup">
+        <p>{quantity > 0 ? quantity : ""}</p>
+        <p>{type}</p>
+      </div>
+    </React.Fragment>
   );
 }

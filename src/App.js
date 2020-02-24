@@ -8,6 +8,7 @@ function App() {
   const [todos, setTodos] = useState([]);
   const [cups, setCups] = useState([]);
   const todoLength = 3;
+  const cupsLength = 4;
 
   useEffect(() => {
     let i = 0;
@@ -16,6 +17,19 @@ function App() {
         return [...todos, randomizer()];
       });
       i++;
+    }
+    let j = 0;
+    while (j < cupsLength) {
+      setCups(cups => {
+        return [
+          ...cups,
+          {
+            quantity: 0,
+            type: null
+          }
+        ];
+      });
+      j++;
     }
   }, []);
 
@@ -30,6 +44,8 @@ function App() {
   };
 
   const handleClick = type => {
+    //TODO if object in array has quantity = 0, get object and add props
+    //TODO if there is no empty object available, ignore click
     if (cups.length < 4) {
       setCups(cups => {
         return [
