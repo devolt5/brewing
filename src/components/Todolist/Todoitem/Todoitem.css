@@ -1,5 +1,10 @@
 .item {
-    width: 50px;
-    height: 50px;
-    background-color: rgb(192, 192, 192);
+  display: inline-block;
+  width: 150px;
+
+  background-color: rgb(192, 192, 192);
+}
+
+.item div {
+  margin: 0 1rem;
 }

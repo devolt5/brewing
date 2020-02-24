@@ -1,10 +1,15 @@
-import React from 'react';
-import './Todoitem.css'
+import React from "react";
+import "./Todoitem.css";
 
-export default function Todoitem() {
-    return (
-      <React.Fragment>
-        <div className="item">Ein Item</div>
-      </React.Fragment>
-    );
-  }
+export default function Todoitem({ quantity, type }) {
+  return (
+    <React.Fragment>
+      <div className="item">
+        <div>
+          <p>{quantity}</p>
+          <p>{type}</p>
+        </div>
+      </div>
+    </React.Fragment>
+  );
+}
