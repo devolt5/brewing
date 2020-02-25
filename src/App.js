@@ -5,6 +5,7 @@ import Controlpanel from "./components/Controlpanel/Controlpanel";
 import "./App.css";
 
 function App() {
+  //helper function for updating the status of platformSlot
   function updatePlatformStatus(status, id) {
     setPlatform(platform => {
       const currentplatform = {
@@ -14,6 +15,16 @@ function App() {
       return [...platform];
     });
   }
+
+  //helper function to update props of current cup in platform
+  function updateCupsProps(prop, id) {
+    setCups(cups => {
+      cups[id] = { ...cups[id], ...prop };
+      return [...cups];
+    });
+  }
+
+  //interval function which simulates filling of cup in platformSlot
   function processCup(id) {
     let fillLevel = 0;
     //block, if already running
@@ -23,12 +34,16 @@ function App() {
     //set to running
     updatePlatformStatus("running", id);
     const interval = setInterval(() => {
+      //update cups fillLevel frequently
+      updateCupsProps({ fillLevel: fillLevel }, id);
       fillLevel++;
       if (fillLevel === 10) {
         updatePlatformStatus("finished", id);
+        updateCupsProps({ status: "finished" }, id);
       }
       if (fillLevel === 12) {
         updatePlatformStatus("overflow", id);
+        updateCupsProps({ status: "overflow" }, id);
         clearInterval(interval);
       }
     }, 500);
@@ -45,7 +60,6 @@ function App() {
   const [activeCup, setActiveCup] = useState(0);
   const [quantitySetting, setQuantitySetting] = useState(1);
   const todoLength = 3;
-  const cupsLength = 4;
 
   useEffect(() => {
     let i = 0;
@@ -55,22 +69,13 @@ function App() {
       });
       i++;
     }
-    let j = 0;
-    while (j < cupsLength) {
-      setCups(cups => {
-        return [
-          ...cups,
-          {
-            id: j++, //TODO fix wrong counter
-            key: j++,
-            quantity: 0,
-            type: null,
-            running: false
-          }
-        ];
-      });
-      j++;
-    }
+    //TODO implement generator for more than 4 cups
+    setCups([
+      { id: 0, key: 0, quantity: 0, type: null, fillLevel: 0, status: "empty" },
+      { id: 1, key: 1, quantity: 0, type: null, fillLevel: 0, status: "empty" },
+      { id: 2, key: 2, quantity: 0, type: null, fillLevel: 0, status: "empty" },
+      { id: 3, key: 3, quantity: 0, type: null, fillLevel: 0, status: "empty" }
+    ]);
   }, []);
 
   //generate todos

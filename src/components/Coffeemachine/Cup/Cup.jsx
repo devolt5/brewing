@@ -1,10 +1,7 @@
 import React, { useState } from "react";
 import "./Cup.css";
 
-export default function Cup({ id, quantity, type, active, running }) {
-  //const [finished, setFinished] = useState(false);
-  //const [overflow, setOverflow] = useState(false);
-
+export default function Cup({ id, quantity, type, active, fillLevel, status }) {
   return (
     <React.Fragment>
       <div className="cup">
@@ -12,7 +9,8 @@ export default function Cup({ id, quantity, type, active, running }) {
         <p>{quantity > 0 ? quantity : "empty"}</p>
         <p>{type}</p>
         <p>{active ? "active" : ""}</p>
-        <p>{running ? "running" : ""}</p>
+        <p>{fillLevel}</p>
+        <p>{status}</p>
       </div>
     </React.Fragment>
   );

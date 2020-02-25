@@ -25,7 +25,8 @@ export default function Coffeemachine({ cups, activeCup, handleStartCup }) {
           quantity={cup.quantity}
           type={cup.type}
           active={cups.indexOf(cup) === activeCup ? true : false}
-          running={cup.running}
+          fillLevel={cup.fillLevel}
+          status={cup.status}
         />
       ))}
     </div>
