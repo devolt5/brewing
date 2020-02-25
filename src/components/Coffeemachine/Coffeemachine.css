@@ -1,5 +1,13 @@
 .machine {
-    width: 500px;
-    height: 500px;
-    background-color: rgb(255, 153, 153);
+  width: 500px;
+  height: 500px;
+  background-color: rgb(255, 153, 153);
+}
+
+.startButton {
+  display: inline-block;
+  width: 50px;
+  height: 50px;
+  background-color: black;
+  margin: 0 1rem;
 }

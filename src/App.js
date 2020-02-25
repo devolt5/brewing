@@ -5,8 +5,43 @@ import Controlpanel from "./components/Controlpanel/Controlpanel";
 import "./App.css";
 
 function App() {
+  function updatePlatformStatus(status, id) {
+    setPlatform(platform => {
+      const currentplatform = {
+        status: status
+      };
+      platform[id] = { ...platform[id], ...currentplatform };
+      return [...platform];
+    });
+  }
+  function processCup(id) {
+    let fillLevel = 0;
+    //block, if already running
+    if (platform[id].status === "running") {
+      return;
+    }
+    //set to running
+    updatePlatformStatus("running", id);
+    const interval = setInterval(() => {
+      fillLevel++;
+      if (fillLevel === 10) {
+        updatePlatformStatus("finished", id);
+      }
+      if (fillLevel === 12) {
+        updatePlatformStatus("overflow", id);
+        clearInterval(interval);
+      }
+    }, 500);
+  }
+
   const [todos, setTodos] = useState([]);
   const [cups, setCups] = useState([]);
+  const [platform, setPlatform] = useState([
+    { id: 0, fillLevel: 0, status: "idle", process: processCup },
+    { id: 1, fillLevel: 0, status: "idle", process: processCup },
+    { id: 2, fillLevel: 0, status: "idle", process: processCup },
+    { id: 3, fillLevel: 0, status: "idle", process: processCup }
+  ]);
   const [activeCup, setActiveCup] = useState(0);
   const [quantitySetting, setQuantitySetting] = useState(1);
   const todoLength = 3;
@@ -64,13 +99,15 @@ function App() {
     });
   };
 
-  const handleStartCup = () => {
+  const handleStartCup = event => {
+    const currentId = event.target.attributes.plattformid.value;
+    platform[currentId].process(currentId);
     //start current cup by setting running to true
-    setCups(cups => {
-      const currentCup = { ...cups[activeCup], running: true };
-      cups[activeCup] = currentCup;
-      return [...cups];
-    });
+    // setCups(cups => {
+    //   const currentCup = { ...cups[activeCup], running: true };
+    //   cups[activeCup] = currentCup;
+    //   return [...cups];
+    // });
 
     //reset quantity and set next empty cup to active
     setQuantitySetting(1);
