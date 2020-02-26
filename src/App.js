@@ -123,16 +123,18 @@ function App() {
   const handleStartCup = event => {
     //FIXME get currentId NOT via event but via react var
     const currentId = event.target.attributes.plattformid.value;
-    if (
-      cups[currentId].status === "empty" &&
-      parseInt(currentId) === activeCup
-    ) {
+    //start cup only when not empty
+    if (cups[currentId].quantity === 0) {
+      return;
+    }
+    //start process only on activeCup
+    if (parseInt(currentId) === activeCup) {
       cups[currentId].process(currentId);
     }
     //reset quantity and set next empty cup to active
     setQuantitySetting(1);
     const nextEmpty = cups.find(
-      cup => cup.status === "empty" && cup.id !== parseInt(currentId)
+      cup => cup.quantity === 0 && cup.id !== parseInt(currentId)
     );
     const index = cups.indexOf(nextEmpty);
     //save the current active cup

@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import "./Cup.css";
 
-export default function Cup({ id, quantity, type, active, fillLevel, status }) {
+export default function Cup({ id, quantity, type, active, fillLevel }) {
   return (
     <React.Fragment>
       <div className="cup">
@@ -10,7 +10,6 @@ export default function Cup({ id, quantity, type, active, fillLevel, status }) {
         <p>{type}</p>
         <p>{active ? "active" : ""}</p>
         <p>{fillLevel}</p>
-        <p>{status}</p>
       </div>
     </React.Fragment>
   );

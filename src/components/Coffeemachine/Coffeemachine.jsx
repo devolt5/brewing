@@ -17,7 +17,7 @@ export default function Coffeemachine({ cups, activeCup, handleStartCup }) {
           plattformid={platformSlot.id}
         ></div>
       ))}
-
+      <br />
       {cups.map(cup => (
         <Cup
           key={cup.id}
@@ -26,7 +26,6 @@ export default function Coffeemachine({ cups, activeCup, handleStartCup }) {
           type={cup.type}
           active={cups.indexOf(cup) === activeCup ? true : false}
           fillLevel={cup.fillLevel}
-          status={cup.status}
         />
       ))}
     </div>
