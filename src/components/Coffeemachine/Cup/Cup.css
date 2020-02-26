@@ -1,6 +1,9 @@
 .cup {
-  background-color: rgb(117, 43, 9);
+  background-image: url("../../../assets/cup_small.png");
+  background-repeat: no-repeat;
+  background-size: 80px;
   display: inline-block;
   margin: 0 1rem;
   height: 200px;
+  width: 80px;
 }

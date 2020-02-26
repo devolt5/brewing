@@ -1,7 +1,10 @@
 .machine {
-  width: 500px;
-  height: 500px;
-  background-color: rgb(255, 153, 153);
+  width: 450px;
+  height: 305px;
+  padding-left: 84px;
+  padding-top: 111px;
+  background-image: url("../../assets/machine.png");
+  background-size: contain;
 }
 
 .startButton {

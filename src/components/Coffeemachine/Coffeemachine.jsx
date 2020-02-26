@@ -20,8 +20,6 @@ export default function Coffeemachine({ cups, activeCup, handleCupButton }) {
 
   return (
     <div className="machine">
-      <h1>Maschine</h1>
-
       {platform.map(platformSlot => (
         <div
           className="startButton"
@@ -32,7 +30,7 @@ export default function Coffeemachine({ cups, activeCup, handleCupButton }) {
           }
         ></div>
       ))}
-      <br />
+      <br /> <br /> <br />
       {cups.map(cup => (
         <Cup
           key={cup.id}
