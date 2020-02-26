@@ -91,7 +91,7 @@ function App() {
         process: processCup
       }
     ]);
-  }, []);
+  }, []); //FIXME implement processCup corretly to avoid warning
 
   //generate todos
   const randomizer = () => {
@@ -105,7 +105,7 @@ function App() {
   };
 
   //handle ControlPanel Button
-  const handleClick = type => {
+  const handleSelectIngredients = type => {
     //change quantity between 1 and 2
     quantitySetting === 2 ? setQuantitySetting(1) : setQuantitySetting(2);
 
@@ -120,7 +120,7 @@ function App() {
   };
 
   //handle Start Button
-  const handleStartCup = event => {
+  const handleCupButton = event => {
     //FIXME get currentId NOT via event but via react var
     const currentId = event.target.attributes.plattformid.value;
     //start cup only when not empty
@@ -153,10 +153,10 @@ function App() {
       <Coffeemachine
         cups={cups}
         activeCup={activeCup}
-        handleStartCup={handleStartCup}
+        handleCupButton={handleCupButton}
       />
       <br />
-      <Controlpanel handleClick={handleClick} />
+      <Controlpanel handleSelectIngredients={handleSelectIngredients} />
     </React.Fragment>
   );
 }
