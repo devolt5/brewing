@@ -1,6 +1,8 @@
 import React from "react";
 import Cup from "./Cup/Cup";
 import "./Coffeemachine.css";
+import button_active from "../../assets/button_active.svg";
+import button_inactive from "../../assets/button_inactive.svg";
 
 export default function Coffeemachine({ cups, activeCup, handleCupButton }) {
   //controls the filling of cups
@@ -14,8 +16,12 @@ export default function Coffeemachine({ cups, activeCup, handleCupButton }) {
     return null;
   };
 
-  const buttonStyle = {
-    backgroundColor: "green"
+  const runningStyle = {
+    backgroundImage: 'url("' + button_active + '")'
+  };
+
+  const idleStyle = {
+    backgroundImage: 'url("' + button_inactive + '")'
   };
 
   return (
@@ -26,7 +32,9 @@ export default function Coffeemachine({ cups, activeCup, handleCupButton }) {
           onClick={handleCupButton}
           plattformid={platformSlot.id}
           style={
-            getCupStatus(platformSlot.id) === "finished" ? buttonStyle : {}
+            getCupStatus(platformSlot.id) === "running"
+              ? runningStyle
+              : idleStyle
           }
         ></div>
       ))}

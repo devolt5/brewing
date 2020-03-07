@@ -1,16 +1,16 @@
 .machine {
-  width: 450px;
+  width: 430px;
   height: 305px;
-  padding-left: 84px;
-  padding-top: 111px;
+  padding-left: 60px;
+  padding-top: 40px;
   background-image: url("../../assets/machine.svg");
   background-size: contain;
 }
 
 .startButton {
   display: inline-block;
-  width: 50px;
-  height: 50px;
-  background-color: black;
-  margin: 0 1rem;
+  width: 92px;
+  height: 90px;
+  background-size: cover;
+  margin-right: 5px;
 }
