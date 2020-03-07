@@ -6,23 +6,17 @@ export default function Controlpanel({ handleSelectIngredients }) {
     <div className="panel">
       <div className="innerpanel">
         <div
-          className="controlbutton"
+          className="controlbutton coffee"
           onClick={() => handleSelectIngredients("coffee")}
-        >
-          Kaffee
-        </div>
+        ></div>
         <div
-          className="controlbutton"
+          className="controlbutton chocolate"
           onClick={() => handleSelectIngredients("chocolate")}
-        >
-          Schokolade
-        </div>
+        ></div>
         <div
-          className="controlbutton"
+          className="controlbutton sugar"
           onClick={() => handleSelectIngredients("sugar")}
-        >
-          Zucker
-        </div>
+        ></div>
       </div>
     </div>
   );

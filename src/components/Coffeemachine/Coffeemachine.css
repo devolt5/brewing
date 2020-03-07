@@ -8,6 +8,7 @@
 }
 
 .startButton {
+  cursor: pointer;
   display: inline-block;
   width: 92px;
   height: 90px;

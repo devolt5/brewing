@@ -4,16 +4,37 @@
   background-color: #793724;
 }
 
-.controlbutton {
-  display: inline-block;
-  height: 100px;
-  width: 100px;
-  background-color: chartreuse;
-  margin: 1rem;
-}
-
 .innerpanel {
   background-color: rgb(87, 34, 4);
-  margin: 0 1rem;
-  height: 140px;
+  margin: 0 35px;
+  height: 120px;
+  text-align: center;
+}
+
+.controlbutton {
+  cursor: pointer;
+  opacity: 0.6;
+  display: inline-block;
+  height: 103px;
+  width: 80px;
+  margin: 0.5rem;
+}
+
+.controlbutton:hover {
+  opacity: 1;
+}
+
+.controlbutton.coffee {
+  background-image: url("../../assets/control_coffee.svg");
+  background-size: cover;
+}
+
+.controlbutton.sugar {
+  background-image: url("../../assets/control_sugar.svg");
+  background-size: cover;
+}
+
+.controlbutton.chocolate {
+  background-image: url("../../assets/control_chocolate.svg");
+  background-size: cover;
 }
