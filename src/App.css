@@ -1,3 +1,11 @@
+body {
+  height: 100%;
+  background-color: #b56048;
+}
+
 #root {
   background-color: #b56048;
+  height: 100vh;
+  width: 50%;
+  margin: 0 auto;
 }

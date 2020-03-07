@@ -155,7 +155,6 @@ function App() {
         activeCup={activeCup}
         handleCupButton={handleCupButton}
       />
-      <br />
       <Controlpanel handleSelectIngredients={handleSelectIngredients} />
     </React.Fragment>
   );

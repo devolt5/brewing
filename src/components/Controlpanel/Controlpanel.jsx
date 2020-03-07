@@ -4,27 +4,26 @@ import "./Controlpanel.css";
 export default function Controlpanel({ handleSelectIngredients }) {
   return (
     <div className="panel">
-      <button
-        className="controlbutton"
-        onClick={() => handleSelectIngredients("coffee")}
-        type="button"
-      >
-        Kaffee
-      </button>
-      <button
-        className="controlbutton"
-        onClick={() => handleSelectIngredients("chocolate")}
-        type="button"
-      >
-        Schokolade
-      </button>
-      <button
-        className="controlbutton"
-        onClick={() => handleSelectIngredients("sugar")}
-        type="button"
-      >
-        Zucker
-      </button>
+      <div className="innerpanel">
+        <div
+          className="controlbutton"
+          onClick={() => handleSelectIngredients("coffee")}
+        >
+          Kaffee
+        </div>
+        <div
+          className="controlbutton"
+          onClick={() => handleSelectIngredients("chocolate")}
+        >
+          Schokolade
+        </div>
+        <div
+          className="controlbutton"
+          onClick={() => handleSelectIngredients("sugar")}
+        >
+          Zucker
+        </div>
+      </div>
     </div>
   );
 }

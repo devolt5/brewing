@@ -4,6 +4,10 @@
   background-size: 60px;
   display: inline-block;
   margin: 0 1rem;
-  height: 200px;
+  height: 110px;
   width: 60px;
+}
+
+.cup > p {
+  font-size: 10px;
 }
