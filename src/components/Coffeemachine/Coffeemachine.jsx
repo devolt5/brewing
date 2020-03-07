@@ -18,7 +18,8 @@ export default function Coffeemachine({ cups, activeCup, handleCupButton }) {
   };
 
   const runningStyle = {
-    backgroundImage: 'url("' + button_active + '")'
+    backgroundImage: 'url("' + button_active + '")',
+    opacity: 1
   };
 
   const idleStyle = {
@@ -26,7 +27,8 @@ export default function Coffeemachine({ cups, activeCup, handleCupButton }) {
   };
 
   const overflowStyle = {
-    backgroundImage: 'url("' + button_trash + '")'
+    backgroundImage: 'url("' + button_trash + '")',
+    opacity: 1
   };
 
   return (
