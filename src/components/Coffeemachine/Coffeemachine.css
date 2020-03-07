@@ -8,10 +8,15 @@
 }
 
 .startButton {
+  opacity: 0.3;
   cursor: pointer;
   display: inline-block;
   width: 92px;
   height: 90px;
   background-size: cover;
   margin-right: 5px;
+}
+
+.startButton:hover {
+  opacity: 1;
 }
