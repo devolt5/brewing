@@ -1,8 +1,12 @@
 .item {
   display: inline-block;
-  width: 150px;
-
-  background-color: rgb(192, 192, 192);
+  width: 80px;
+  height: 90px;
+  margin: 0 1rem;
+  background-size: contain;
+  z-index: 110;
+  position: relative;
+  top: -26px;
 }
 
 .item div {

@@ -1,5 +1,12 @@
 .todolist {
-    width: 500px;
-    height: 300px;
-    background-color: rgb(92, 92, 92);
+  height: 150px;
+  padding-top: 2rem;
+  text-align: center;
+}
+
+.bar {
+  z-index: 90;
+  height: 34px;
+  width: 508px;
+  background-image: url("../../assets/bar.svg");
 }
