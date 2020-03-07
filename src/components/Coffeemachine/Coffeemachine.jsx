@@ -3,6 +3,7 @@ import Cup from "./Cup/Cup";
 import "./Coffeemachine.css";
 import button_active from "../../assets/button_active.svg";
 import button_inactive from "../../assets/button_inactive.svg";
+import button_trash from "../../assets/button_trash.svg";
 
 export default function Coffeemachine({ cups, activeCup, handleCupButton }) {
   //controls the filling of cups
@@ -24,6 +25,10 @@ export default function Coffeemachine({ cups, activeCup, handleCupButton }) {
     backgroundImage: 'url("' + button_inactive + '")'
   };
 
+  const overflowStyle = {
+    backgroundImage: 'url("' + button_trash + '")'
+  };
+
   return (
     <div className="machine">
       {platform.map(platformSlot => (
@@ -34,6 +39,8 @@ export default function Coffeemachine({ cups, activeCup, handleCupButton }) {
           style={
             getCupStatus(platformSlot.id) === "running"
               ? runningStyle
+              : getCupStatus(platformSlot.id) === "overflow"
+              ? overflowStyle
               : idleStyle
           }
         ></div>
