@@ -108,6 +108,7 @@ function App() {
   //handle ControlPanel Button
   const handleSelectIngredients = type => {
     //change quantity between 1 and 2
+    //TODO if category is changed, reset to 1 in every case
     quantitySetting === 2 ? setQuantitySetting(1) : setQuantitySetting(2);
 
     setCups(cups => {

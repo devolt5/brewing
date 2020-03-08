@@ -6,12 +6,19 @@ export default function Cup({ id, quantity, type, active, fillLevel, status }) {
     backgroundImage: 'url("cup_ready.svg")'
   };
 
-  //current stage: 15; current height: 78px; 78/14 = 5.5px per stage
+  const renderIngredients = () => {
+    if (quantity == 2) {
+      return <img src={"double" + type + ".svg"} />;
+    }
+    return <img src={type + ".svg"} />;
+  };
+
+  //current stage: 15; current height: 78px; 78/14 = ~5.5px per stage
 
   return (
     <div className="cup" style={active ? style : {}}>
       {/* <p>{quantity > 0 ? quantity : "empty"}</p> */}
-      {type !== null ? <img src={type + ".svg"} /> : ""}
+      {type !== null ? renderIngredients() : ""}
       {/* <p>{fillLevel}</p>
       <p>{status}</p> */}
       {active ? (
