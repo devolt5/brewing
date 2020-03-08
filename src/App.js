@@ -49,7 +49,6 @@ function App() {
       });
       i++;
     }
-    console.log(todos);
     //TODO implement generator for more than 4 cups
     setCups([
       {

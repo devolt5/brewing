@@ -17,7 +17,14 @@ export default function Cup({ id, quantity, type, active, fillLevel, status }) {
       {active ? (
         ""
       ) : (
-        <div className="liquid" style={{ height: fillLevel * 6 }}></div>
+        <div>
+          {status === "running" || status === "finished" ? (
+            <div className="spurt"></div>
+          ) : (
+            ""
+          )}
+          <div className="liquid" style={{ height: fillLevel * 6 }}></div>
+        </div>
       )}
     </div>
   );
