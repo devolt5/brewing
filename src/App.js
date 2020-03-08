@@ -36,6 +36,7 @@ function App() {
 
   const [todos, setTodos] = useState([]);
   const [cups, setCups] = useState([]);
+  const [playerScore, setPlayerScore] = useState(0);
   const [activeCup, setActiveCup] = useState(0);
   const [quantitySetting, setQuantitySetting] = useState(1);
   const todoLength = 3;
@@ -48,6 +49,7 @@ function App() {
       });
       i++;
     }
+    console.log(todos);
     //TODO implement generator for more than 4 cups
     setCups([
       {
@@ -130,6 +132,21 @@ function App() {
     //start process only on activeCup
     if (parseInt(currentId) === activeCup) {
       cups[currentId].process(currentId);
+    }
+    //handle click when finished
+    if (cups[currentId].status === "finished") {
+      for (let item of todos) {
+        if (item.type === cups[currentId].type) {
+          let index = todos.indexOf(item);
+          todos[index] = randomizer(); //replace with new item
+          //TODO what to do when the list empties?
+          setTodos(todos); //inform react
+          setPlayerScore(playerScore => {
+            return playerScore + 1;
+          });
+          break; //delete only one matching task
+        }
+      }
     }
     //reset quantity and set next empty cup to active
     setQuantitySetting(1);
