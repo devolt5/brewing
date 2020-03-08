@@ -166,6 +166,7 @@ function App() {
 
   return (
     <React.Fragment>
+      <p>{playerScore}</p>
       <Todolist todos={todos} />
       <Coffeemachine
         cups={cups}

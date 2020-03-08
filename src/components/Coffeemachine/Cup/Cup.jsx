@@ -7,7 +7,7 @@ export default function Cup({ id, quantity, type, active, fillLevel, status }) {
   };
 
   const renderIngredients = () => {
-    if (quantity == 2) {
+    if (quantity === 2) {
       return <img src={"double" + type + ".svg"} />;
     }
     return <img src={type + ".svg"} />;

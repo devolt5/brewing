@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./Todoitem.css";
 
 export default function Todoitem({ quantity, type }) {
+  //TODO add handler from button which changes class to "item slidein"
+  const [styleClass, setStyleClass] = useState("item slidein");
   const style = {
     backgroundImage: 'url("task_' + type + "_" + quantity + '.svg")'
   };
 
-  return <div className="item" style={style}></div>;
+  return <div className={styleClass} style={style}></div>;
 }

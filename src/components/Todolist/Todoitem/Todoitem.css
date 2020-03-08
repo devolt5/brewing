@@ -1,3 +1,12 @@
+@keyframes slideInFromLeft {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
 .item {
   display: inline-block;
   width: 80px;
@@ -7,6 +16,10 @@
   z-index: 110;
   position: relative;
   top: -26px;
+}
+
+.slidein {
+  animation: 1s ease-out 0s 1 slideInFromLeft;
 }
 
 .item div {
