@@ -17,7 +17,7 @@ export default function Coffeemachine({ cups, activeCup, handleCupButton }) {
     return null;
   };
 
-  const runningStyle = {
+  const finishedStyle = {
     backgroundImage: 'url("' + button_active + '")',
     opacity: 1
   };
@@ -40,7 +40,9 @@ export default function Coffeemachine({ cups, activeCup, handleCupButton }) {
           plattformid={platformSlot.id}
           style={
             getCupStatus(platformSlot.id) === "running"
-              ? runningStyle
+              ? idleStyle
+              : getCupStatus(platformSlot.id) === "finished"
+              ? finishedStyle
               : getCupStatus(platformSlot.id) === "overflow"
               ? overflowStyle
               : idleStyle
