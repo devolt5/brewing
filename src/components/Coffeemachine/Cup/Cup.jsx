@@ -2,10 +2,11 @@ import React from "react";
 import "./Cup.css";
 
 export default function Cup({ id, quantity, type, active, fillLevel, status }) {
-  console.log(active);
   const style = {
     backgroundImage: 'url("cup_ready.svg")'
   };
+
+  //current stage: 15; current height: 78px; 78/14 = 5.5px per stage
 
   return (
     <div className="cup" style={active ? style : {}}>
@@ -13,6 +14,11 @@ export default function Cup({ id, quantity, type, active, fillLevel, status }) {
       {type !== null ? <img src={type + ".svg"} /> : ""}
       {/* <p>{fillLevel}</p>
       <p>{status}</p> */}
+      {active ? (
+        ""
+      ) : (
+        <div className="liquid" style={{ height: fillLevel * 6 }}></div>
+      )}
     </div>
   );
 }

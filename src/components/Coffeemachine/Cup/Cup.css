@@ -14,8 +14,19 @@
   bottom: 15px;
   width: 40px;
   left: 28px;
+  z-index: 110;
 }
 
 .cup > p {
   font-size: 10px;
+}
+
+.cup > .liquid {
+  background-color: #572204;
+  position: absolute;
+  bottom: 3px;
+  display: block;
+  width: 31px;
+  left: 32px;
+  z-index: 90;
 }
