@@ -13,8 +13,6 @@ export default function Cup({ id, quantity, type, active, fillLevel, status }) {
     return <img src={type + ".svg"} />;
   };
 
-  //current stage: 15; current height: 78px; 78/14 = ~5.5px per stage
-
   return (
     <div className="cup" style={active ? style : {}}>
       {/* <p>{quantity > 0 ? quantity : "empty"}</p> */}
@@ -30,7 +28,11 @@ export default function Cup({ id, quantity, type, active, fillLevel, status }) {
           ) : (
             ""
           )}
-          <div className="liquid" style={{ height: fillLevel * 6 }}></div>
+          {status !== "overflow" ? (
+            <div className="liquid" style={{ height: fillLevel * 0.7 }}></div>
+          ) : (
+            ""
+          )}
         </div>
       )}
     </div>

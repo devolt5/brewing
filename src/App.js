@@ -1,10 +1,39 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Todolist from "./components/Todolist/Todolist";
 import Coffeemachine from "./components/Coffeemachine/Coffeemachine";
 import Controlpanel from "./components/Controlpanel/Controlpanel";
 import "./App.css";
 
+//custom hook made by: https://overreacted.io/making-setinterval-declarative-with-react-hooks/
+function useInterval(callback, delay) {
+  const savedCallback = useRef();
+
+  // Remember the latest callback.
+  useEffect(() => {
+    savedCallback.current = callback;
+  }, [callback]);
+
+  // Set up the interval.
+  useEffect(() => {
+    function tick() {
+      savedCallback.current();
+    }
+    if (delay !== null) {
+      let id = setInterval(tick, delay);
+      return () => clearInterval(id);
+    }
+  }, [delay]);
+}
+
 function App() {
+  //constants and variables
+  const [todos, setTodos] = useState([]);
+  const [cups, setCups] = useState([]);
+  const [playerScore, setPlayerScore] = useState(0);
+  const [activeCup, setActiveCup] = useState(0);
+  const [quantitySetting, setQuantitySetting] = useState(1);
+  const todoLength = 3;
+
   //helper function to update props of current cup in platform
   function updateCupsProps(prop, id) {
     setCups(cups => {
@@ -13,36 +42,27 @@ function App() {
     });
   }
 
-  //interval function which simulates filling of cup in platformSlot
-  function processCup(id) {
-    let fillLevel = 0;
-    //set to running
-    updateCupsProps({ status: "running" }, id);
-    const interval = setInterval(() => {
-      //update cups fillLevel frequently
-      updateCupsProps({ fillLevel: fillLevel }, id);
-      //set cup to inactive to handle next cup
-      updateCupsProps({ active: false }, id);
-      fillLevel++;
-      if (fillLevel === 10) {
-        updateCupsProps({ status: "finished" }, id);
+  //interval function which simulates filling of cups in platformSlot
+  useInterval(() => {
+    cups.forEach(cup => {
+      if (cup.status === "running" || cup.status === "finished") {
+        if (cup.fillLevel < 100) {
+          let newFillLevel = cup.fillLevel + 1;
+          updateCupsProps({ fillLevel: newFillLevel }, cup.id);
+        }
+        if (cup.fillLevel === 80) {
+          updateCupsProps({ status: "finished" }, cup.id);
+        }
+        if (cup.fillLevel >= 100) {
+          updateCupsProps({ status: "overflow" }, cup.id);
+        }
       }
-      if (fillLevel === 14) {
-        updateCupsProps({ status: "overflow" }, id);
-        clearInterval(interval);
-      }
-    }, 500);
-  }
-
-  const [todos, setTodos] = useState([]);
-  const [cups, setCups] = useState([]);
-  const [playerScore, setPlayerScore] = useState(0);
-  const [activeCup, setActiveCup] = useState(0);
-  const [quantitySetting, setQuantitySetting] = useState(1);
-  const todoLength = 3;
+    });
+  }, 50);
 
   useEffect(() => {
     let i = 0;
+    //generator for todos
     while (i < todoLength) {
       setTodos(todos => {
         return [...todos, randomizer()];
@@ -58,8 +78,7 @@ function App() {
         type: null,
         fillLevel: 0,
         status: "empty",
-        active: true,
-        process: processCup
+        active: true
       },
       {
         id: 1,
@@ -68,8 +87,7 @@ function App() {
         type: null,
         fillLevel: 0,
         status: "empty",
-        active: false,
-        process: processCup
+        active: false
       },
       {
         id: 2,
@@ -78,8 +96,7 @@ function App() {
         type: null,
         fillLevel: 0,
         status: "empty",
-        active: false,
-        process: processCup
+        active: false
       },
       {
         id: 3,
@@ -88,11 +105,10 @@ function App() {
         type: null,
         fillLevel: 0,
         status: "empty",
-        active: false,
-        process: processCup
+        active: false
       }
     ]);
-  }, []); //FIXME implement processCup corretly to avoid warning
+  }, []);
 
   //generate todos
   const randomizer = () => {
@@ -105,7 +121,7 @@ function App() {
     };
   };
 
-  //handle ControlPanel Button
+  //handle Ingredients Button
   const handleSelectIngredients = type => {
     //change quantity between 1 and 2
     //TODO if category is changed, reset to 1 in every case
@@ -121,7 +137,7 @@ function App() {
     });
   };
 
-  //handle Start Button
+  //handle Start/Stop Button
   const handleCupButton = event => {
     //FIXME get currentId NOT via event but via react var
     const currentId = event.target.attributes.plattformid.value;
@@ -131,7 +147,14 @@ function App() {
     }
     //start process only on activeCup
     if (parseInt(currentId) === activeCup) {
-      cups[currentId].process(currentId);
+      setCups(cups => {
+        const currentCup = {
+          ...cups[currentId],
+          status: "running"
+        };
+        cups[currentId] = currentCup;
+        return [...cups];
+      });
     }
     //handle click when finished
     if (cups[currentId].status === "finished") {
@@ -143,6 +166,21 @@ function App() {
           setTodos(todos); //inform react
           setPlayerScore(playerScore => {
             return playerScore + 1;
+          });
+
+          //reset finished cup
+          cups[currentId].process(currentId, true);
+          setCups(cups => {
+            const currentCup = {
+              ...cups[currentId],
+              active: false,
+              quantity: 0,
+              type: null,
+              fillLevel: 0,
+              status: "empty"
+            };
+            cups[currentId] = currentCup;
+            return [...cups];
           });
           break; //delete only one matching task
         }
