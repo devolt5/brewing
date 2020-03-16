@@ -131,7 +131,7 @@ function App() {
     }
     //start process only on activeCup
     if (parseInt(currentId) === activeCup) {
-      cups[currentId].process(currentId);
+      cups[currentId].process(currentId, false);
     }
     //handle click when finished
     if (cups[currentId].status === "finished") {
@@ -143,6 +143,21 @@ function App() {
           setTodos(todos); //inform react
           setPlayerScore(playerScore => {
             return playerScore + 1;
+          });
+
+          //reset finished cup
+          cups[currentId].process(currentId, true);
+          setCups(cups => {
+            const currentCup = {
+              ...cups[currentId],
+              active: false,
+              quantity: 0,
+              type: null,
+              fillLevel: 0,
+              status: "empty"
+            };
+            cups[currentId] = currentCup;
+            return [...cups];
           });
           break; //delete only one matching task
         }

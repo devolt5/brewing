@@ -30,7 +30,11 @@ export default function Cup({ id, quantity, type, active, fillLevel, status }) {
           ) : (
             ""
           )}
-          <div className="liquid" style={{ height: fillLevel * 6 }}></div>
+          {status !== "finished" ? (
+            <div className="liquid" style={{ height: fillLevel * 6 }}></div>
+          ) : (
+            ""
+          )}
         </div>
       )}
     </div>
