@@ -1,8 +1,29 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Todolist from "./components/Todolist/Todolist";
 import Coffeemachine from "./components/Coffeemachine/Coffeemachine";
 import Controlpanel from "./components/Controlpanel/Controlpanel";
 import "./App.css";
+
+//own hook made by: https://overreacted.io/making-setinterval-declarative-with-react-hooks/
+function useInterval(callback, delay) {
+  const savedCallback = useRef();
+
+  // Remember the latest callback.
+  useEffect(() => {
+    savedCallback.current = callback;
+  }, [callback]);
+
+  // Set up the interval.
+  useEffect(() => {
+    function tick() {
+      savedCallback.current();
+    }
+    if (delay !== null) {
+      let id = setInterval(tick, delay);
+      return () => clearInterval(id);
+    }
+  }, [delay]);
+}
 
 function App() {
   //helper function to update props of current cup in platform
@@ -13,33 +34,19 @@ function App() {
     });
   }
 
-  //interval function which simulates filling of cup in platformSlot
-  function processCup(id) {
-    let fillLevel = 0;
-    //set to running
-    updateCupsProps({ status: "running" }, id);
-    const interval = setInterval(() => {
-      //update cups fillLevel frequently
-      updateCupsProps({ fillLevel: fillLevel }, id);
-      //set cup to inactive to handle next cup
-      updateCupsProps({ active: false }, id);
-      fillLevel++;
-      if (fillLevel === 10) {
-        updateCupsProps({ status: "finished" }, id);
-      }
-      if (fillLevel === 14) {
-        updateCupsProps({ status: "overflow" }, id);
-        clearInterval(interval);
-      }
-    }, 500);
-  }
-
   const [todos, setTodos] = useState([]);
   const [cups, setCups] = useState([]);
   const [playerScore, setPlayerScore] = useState(0);
   const [activeCup, setActiveCup] = useState(0);
   const [quantitySetting, setQuantitySetting] = useState(1);
   const todoLength = 3;
+
+  //interval function which simulates filling of cups in platformSlot
+  useInterval(() => {
+    cups.forEach(cup => {
+      // console.log(cup);
+    });
+  }, 1000);
 
   useEffect(() => {
     let i = 0;
@@ -58,8 +65,7 @@ function App() {
         type: null,
         fillLevel: 0,
         status: "empty",
-        active: true,
-        process: processCup
+        active: true
       },
       {
         id: 1,
@@ -68,8 +74,7 @@ function App() {
         type: null,
         fillLevel: 0,
         status: "empty",
-        active: false,
-        process: processCup
+        active: false
       },
       {
         id: 2,
@@ -78,8 +83,7 @@ function App() {
         type: null,
         fillLevel: 0,
         status: "empty",
-        active: false,
-        process: processCup
+        active: false
       },
       {
         id: 3,
@@ -88,11 +92,37 @@ function App() {
         type: null,
         fillLevel: 0,
         status: "empty",
-        active: false,
-        process: processCup
+        active: false
       }
     ]);
-  }, []); //FIXME implement processCup corretly to avoid warning
+
+    // setInterval(
+    //   () => {
+    //     // console.log("1sec");
+    //     console.log(getCups());
+
+    //     // console.log(cups);
+    //     // currentCups.forEach(cup => {
+    //     //   console.log(cup);
+    //     // });
+
+    //     // //update cups fillLevel frequently
+    //     // updateCupsProps({ fillLevel: fillLevel }, id);
+    //     // //set cup to inactive to handle next cup
+    //     // updateCupsProps({ active: false }, id);
+    //     // fillLevel++;
+    //     // if (fillLevel === 10) {
+    //     //   updateCupsProps({ status: "finished" }, id);
+    //     // }
+    //     // if (fillLevel === 14) {
+    //     //   updateCupsProps({ status: "overflow" }, id);
+    //     //   clearInterval(interval);
+    //     // }
+    //   },
+    //   1000,
+    //   getCups
+    // );
+  }, []);
 
   //generate todos
   const randomizer = () => {
