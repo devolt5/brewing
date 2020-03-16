@@ -4,7 +4,7 @@ import Coffeemachine from "./components/Coffeemachine/Coffeemachine";
 import Controlpanel from "./components/Controlpanel/Controlpanel";
 import "./App.css";
 
-//own hook made by: https://overreacted.io/making-setinterval-declarative-with-react-hooks/
+//custom hook made by: https://overreacted.io/making-setinterval-declarative-with-react-hooks/
 function useInterval(callback, delay) {
   const savedCallback = useRef();
 
@@ -26,6 +26,14 @@ function useInterval(callback, delay) {
 }
 
 function App() {
+  //constants and variables
+  const [todos, setTodos] = useState([]);
+  const [cups, setCups] = useState([]);
+  const [playerScore, setPlayerScore] = useState(0);
+  const [activeCup, setActiveCup] = useState(0);
+  const [quantitySetting, setQuantitySetting] = useState(1);
+  const todoLength = 3;
+
   //helper function to update props of current cup in platform
   function updateCupsProps(prop, id) {
     setCups(cups => {
@@ -34,22 +42,27 @@ function App() {
     });
   }
 
-  const [todos, setTodos] = useState([]);
-  const [cups, setCups] = useState([]);
-  const [playerScore, setPlayerScore] = useState(0);
-  const [activeCup, setActiveCup] = useState(0);
-  const [quantitySetting, setQuantitySetting] = useState(1);
-  const todoLength = 3;
-
   //interval function which simulates filling of cups in platformSlot
   useInterval(() => {
     cups.forEach(cup => {
-      // console.log(cup);
+      if (cup.status === "running" || cup.status === "finished") {
+        if (cup.fillLevel < 100) {
+          let newFillLevel = cup.fillLevel + 1;
+          updateCupsProps({ fillLevel: newFillLevel }, cup.id);
+        }
+        if (cup.fillLevel === 80) {
+          updateCupsProps({ status: "finished" }, cup.id);
+        }
+        if (cup.fillLevel >= 100) {
+          updateCupsProps({ status: "overflow" }, cup.id);
+        }
+      }
     });
-  }, 1000);
+  }, 50);
 
   useEffect(() => {
     let i = 0;
+    //generator for todos
     while (i < todoLength) {
       setTodos(todos => {
         return [...todos, randomizer()];
@@ -95,33 +108,6 @@ function App() {
         active: false
       }
     ]);
-
-    // setInterval(
-    //   () => {
-    //     // console.log("1sec");
-    //     console.log(getCups());
-
-    //     // console.log(cups);
-    //     // currentCups.forEach(cup => {
-    //     //   console.log(cup);
-    //     // });
-
-    //     // //update cups fillLevel frequently
-    //     // updateCupsProps({ fillLevel: fillLevel }, id);
-    //     // //set cup to inactive to handle next cup
-    //     // updateCupsProps({ active: false }, id);
-    //     // fillLevel++;
-    //     // if (fillLevel === 10) {
-    //     //   updateCupsProps({ status: "finished" }, id);
-    //     // }
-    //     // if (fillLevel === 14) {
-    //     //   updateCupsProps({ status: "overflow" }, id);
-    //     //   clearInterval(interval);
-    //     // }
-    //   },
-    //   1000,
-    //   getCups
-    // );
   }, []);
 
   //generate todos
@@ -135,7 +121,7 @@ function App() {
     };
   };
 
-  //handle ControlPanel Button
+  //handle Ingredients Button
   const handleSelectIngredients = type => {
     //change quantity between 1 and 2
     //TODO if category is changed, reset to 1 in every case
@@ -151,7 +137,7 @@ function App() {
     });
   };
 
-  //handle Start Button
+  //handle Start/Stop Button
   const handleCupButton = event => {
     //FIXME get currentId NOT via event but via react var
     const currentId = event.target.attributes.plattformid.value;
@@ -161,7 +147,14 @@ function App() {
     }
     //start process only on activeCup
     if (parseInt(currentId) === activeCup) {
-      cups[currentId].process(currentId, false);
+      setCups(cups => {
+        const currentCup = {
+          ...cups[currentId],
+          status: "running"
+        };
+        cups[currentId] = currentCup;
+        return [...cups];
+      });
     }
     //handle click when finished
     if (cups[currentId].status === "finished") {
