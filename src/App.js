@@ -42,6 +42,17 @@ function App() {
     });
   }
 
+  function findNextEmpy(id) {
+    //reset quantity and set next empty cup to active
+    setQuantitySetting(1);
+    const nextEmpty = cups.find(
+      cup => cup.quantity === 0 && cup.id !== parseInt(id)
+    );
+    const index = cups.indexOf(nextEmpty);
+    setActiveCup(index); //save the current active cup
+    updateCupsProps({ active: true }, index);
+  }
+
   //interval function which simulates filling of cups in platformSlot
   useInterval(() => {
     cups.forEach(cup => {
@@ -139,6 +150,9 @@ function App() {
 
   //handle Start/Stop Button
   const handleCupButton = event => {
+    //FIXME checks not itself!!!
+    let isACupActive = null;
+    isACupActive = cups.find(cup => cup.active);
     //FIXME get currentId NOT via event but via react var
     const currentId = event.target.attributes.plattformid.value;
     //start cup only when not empty
@@ -187,6 +201,9 @@ function App() {
         cups[currentId] = currentCup;
         return [...cups];
       });
+      if (isACupActive !== "undefined") {
+        findNextEmpy(currentId);
+      }
     }
     //handle click when overflodded
     if (cups[currentId].status === "overflow") {
@@ -203,17 +220,20 @@ function App() {
         cups[currentId] = currentCup;
         return [...cups];
       });
+      if (isACupActive !== "undefined") {
+        findNextEmpy(currentId);
+      }
     }
-    // if (cups[currentId].status === "empty") {
-    //reset quantity and set next empty cup to active
-    setQuantitySetting(1);
-    const nextEmpty = cups.find(
-      cup => cup.quantity === 0 && cup.id !== parseInt(currentId)
-    );
-    const index = cups.indexOf(nextEmpty);
-    setActiveCup(index); //save the current active cup
-    updateCupsProps({ active: true }, index);
-    // }
+    if (
+      //only when empty or running
+      cups[currentId].status !== "finished" &&
+      cups[currentId].status !== "overflow"
+    ) {
+      //don't activate another cup while current is active
+      if (cups[currentId].quantity > 0) {
+        findNextEmpy(currentId);
+      }
+    }
   };
 
   return (
