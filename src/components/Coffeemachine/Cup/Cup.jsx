@@ -7,6 +7,7 @@ export default function Cup({ id, quantity, type, active, fillLevel, status }) {
   };
 
   const [size, setSize] = useState();
+  const [dirty, setDirty] = useState(); //appearance if cup is dirty
   const [factor, setFactor] = useState(0.7); //varies between small or large cup
 
   //renders an image with 1 or 2 ingredients inside of cup
