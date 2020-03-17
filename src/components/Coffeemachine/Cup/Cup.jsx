@@ -19,15 +19,19 @@ export default function Cup({ id, quantity, type, active, fillLevel, status }) {
 
   //varies between small and large cups
   const cupStyle = {
-    backgroundImage: size
+    backgroundImage: 'url("cup_'+size+'.svg")'
+  };
+
+  const dirtyStyle = {
+    backgroundImage: 'url("cup_'+size+'_dirty.svg")'
   };
 
   useEffect(() => {
-    setSize('url("cup_small.svg")');
+    setSize('small');
     setFactor(0.7);
     if (quantity === 2) {
       setFactor(1);
-      setSize('url("cup_large.svg")');
+      setSize('large');
     }
   }, [quantity]);
 
@@ -38,7 +42,7 @@ export default function Cup({ id, quantity, type, active, fillLevel, status }) {
   //      <div> Spurt
   //      <div> Liquid
   return (
-    <div className="cup" style={active ? activeStyle : cupStyle}>
+    <div className="cup" style={active ? activeStyle : (status === "overflow") ? dirtyStyle : cupStyle}>
       {type !== null ? renderIngredients() : ""}
       {active ? (
         ""
