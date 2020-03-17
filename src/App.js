@@ -169,7 +169,6 @@ function App() {
           });
 
           //reset finished cup
-          cups[currentId].process(currentId, true);
           setCups(cups => {
             const currentCup = {
               ...cups[currentId],

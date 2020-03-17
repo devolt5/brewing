@@ -1,5 +1,4 @@
 .cup {
-  background-image: url("../../../assets/cup_small.svg");
   background-repeat: no-repeat;
   background-size: 77px;
   background-position: bottom;
@@ -11,7 +10,7 @@
 
 .cup img {
   position: absolute;
-  bottom: 15px;
+  bottom: 5px;
   width: 40px;
   left: 28px;
   z-index: 110;
