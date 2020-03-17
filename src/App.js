@@ -159,7 +159,10 @@ function App() {
     //handle click when finished
     if (cups[currentId].status === "finished") {
       for (let item of todos) {
-        if (item.type === cups[currentId].type) {
+        if (
+          item.type === cups[currentId].type &&
+          item.quantity === cups[currentId].quantity
+        ) {
           let index = todos.indexOf(item);
           todos[index] = randomizer(); //replace with new item
           //TODO what to do when the list empties?
@@ -167,38 +170,50 @@ function App() {
           setPlayerScore(playerScore => {
             return playerScore + 1;
           });
-
-          //reset finished cup
-          setCups(cups => {
-            const currentCup = {
-              ...cups[currentId],
-              active: false,
-              quantity: 0,
-              type: null,
-              fillLevel: 0,
-              status: "empty"
-            };
-            cups[currentId] = currentCup;
-            return [...cups];
-          });
           break; //delete only one matching task
         }
       }
+
+      //reset finished cup
+      setCups(cups => {
+        const currentCup = {
+          ...cups[currentId],
+          active: false,
+          quantity: 0,
+          type: null,
+          fillLevel: 0,
+          status: "empty"
+        };
+        cups[currentId] = currentCup;
+        return [...cups];
+      });
     }
+    //handle click when overflodded
+    if (cups[currentId].status === "overflow") {
+      //reset finished cup
+      setCups(cups => {
+        const currentCup = {
+          ...cups[currentId],
+          active: false,
+          quantity: 0,
+          type: null,
+          fillLevel: 0,
+          status: "empty"
+        };
+        cups[currentId] = currentCup;
+        return [...cups];
+      });
+    }
+    // if (cups[currentId].status === "empty") {
     //reset quantity and set next empty cup to active
     setQuantitySetting(1);
     const nextEmpty = cups.find(
       cup => cup.quantity === 0 && cup.id !== parseInt(currentId)
     );
     const index = cups.indexOf(nextEmpty);
-    //save the current active cup
-    setActiveCup(index);
-    //update active status of cup
-    setCups(cups => {
-      const currentCup = { ...cups[index], active: true };
-      cups[index] = currentCup;
-      return [...cups];
-    });
+    setActiveCup(index); //save the current active cup
+    updateCupsProps({ active: true }, index);
+    // }
   };
 
   return (
