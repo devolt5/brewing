@@ -138,18 +138,23 @@ function App() {
 
   //handle Ingredients Button
   const handleSelectIngredients = type => {
-    //change quantity between 1 and 2
-    //TODO if category is changed, reset to 1 in every case
-    quantitySetting === 2 ? setQuantitySetting(1) : setQuantitySetting(2);
-
-    setCups(cups => {
-      const currentCup = {
-        quantity: quantitySetting,
-        type: type
-      };
-      cups[activeCup] = { ...cups[activeCup], ...currentCup };
-      return [...cups];
-    });
+    if (cups[activeCup].quantity === 0) {
+      updateCupsProps({ quantity: 1, type: type }, cups[activeCup].id);
+    } else if (cups[activeCup].quantity === 1) {
+      updateCupsProps({ quantity: 2, type: type }, cups[activeCup].id);
+    } else if (cups[activeCup].quantity === 2) {
+      for (let cup of cups) {
+        if (cup.status === "empty" && cup.quantity != 2) {
+          if (cup.quantity === 0) {
+            updateCupsProps({ quantity: 1, type: type }, cup.id);
+          }
+          if (cup.quantity === 1) {
+            updateCupsProps({ quantity: 2 }, cup.id);
+          }
+          break; //only add ingredients to one cup at once
+        }
+      }
+    }
   };
 
   //handle Start/Stop Button
