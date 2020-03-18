@@ -31,7 +31,6 @@ function App() {
   const [cups, setCups] = useState([]);
   const [playerScore, setPlayerScore] = useState(0);
   const [activeCup, setActiveCup] = useState(0);
-  const [quantitySetting, setQuantitySetting] = useState(1);
   const todoLength = 4;
 
   //helper function to update props of current cup in platform
@@ -43,12 +42,17 @@ function App() {
   }
 
   function findNextEmpy(id) {
-    //reset quantity and set next empty cup to active
-    setQuantitySetting(1);
+    //set next empty cup to active
     const nextEmpty = cups.find(
-      cup => cup.quantity === 0 && cup.id !== parseInt(id)
+      //FIXME Bug, when all cups are processing, emptycup needs two clicks
+      cup => cup.status === "empty" && cup.id !== parseInt(id)
     );
-    const index = cups.indexOf(nextEmpty);
+    let index = cups.indexOf(nextEmpty);
+    // if (index === -1) {
+    //   if (cups[id].status === "finished") {
+    //     index = id;
+    //   }
+    // }
     setActiveCup(index); //save the current active cup
     updateCupsProps({ active: true }, index);
   }
@@ -144,7 +148,7 @@ function App() {
       updateCupsProps({ quantity: 2, type: type }, cups[activeCup].id);
     } else if (cups[activeCup].quantity === 2) {
       for (let cup of cups) {
-        if (cup.status === "empty" && cup.quantity != 2) {
+        if (cup.status === "empty" && cup.quantity !== 2) {
           if (cup.quantity === 0) {
             updateCupsProps({ quantity: 1, type: type }, cup.id);
           }
@@ -160,15 +164,14 @@ function App() {
   //handle Start/Stop Button
   const handleCupButton = event => {
     //FIXME checks not itself!!!
-    let isACupActive = null;
-    isACupActive = cups.find(cup => cup.active);
+
     //FIXME get currentId NOT via event but via react var
     const currentId = event.target.attributes.plattformid.value;
     //start cup only when not empty
     if (cups[currentId].quantity === 0) {
       return;
     }
-    //start activeCup
+    // === START CUP ===
     if (parseInt(currentId) === activeCup) {
       //search, if cup is holding a correct task
       for (let item of todos) {
@@ -184,18 +187,10 @@ function App() {
           break; //delete only one matching task
         }
       }
-
-      updateCupsProps({ status: "running" }, currentId);
-      // setCups(cups => {
-      //   const currentCup = {
-      //     ...cups[currentId],
-      //     status: "running"
-      //   };
-      //   cups[currentId] = currentCup;
-      //   return [...cups];
-      // });
+      updateCupsProps({ status: "running", active: false }, currentId);
+      // findNextEmpy(currentId);
     }
-    //handle click when finished
+    // === FINISH CUP ===
     if (cups[currentId].status === "finished") {
       //if cup has correct ingredients
       if (cups[currentId].correct) {
@@ -218,11 +213,11 @@ function App() {
         cups[currentId] = currentCup;
         return [...cups];
       });
-      if (isACupActive !== "undefined") {
-        findNextEmpy(currentId);
-      }
+      // if (isACupActive !== "undefined") {
+      //   findNextEmpy(currentId);
+      // }
     }
-    //handle click when overflodded
+    // === OVERFLOW CUP ===
     if (cups[currentId].status === "overflow") {
       //reset finished cup
       setCups(cups => {
@@ -238,19 +233,24 @@ function App() {
         cups[currentId] = currentCup;
         return [...cups];
       });
-      if (isACupActive !== "undefined") {
-        findNextEmpy(currentId);
-      }
+      // if (isACupActive !== "undefined") {
+      //   findNextEmpy(currentId);
+      // }
     }
-    if (
-      //only when empty or running
-      cups[currentId].status !== "finished" &&
-      cups[currentId].status !== "overflow"
-    ) {
-      //don't activate another cup while current is active
-      if (cups[currentId].quantity > 0) {
-        findNextEmpy(currentId);
-      }
+    // if (
+    //   //only when empty or running
+    //   cups[currentId].status !== "finished" &&
+    //   cups[currentId].status !== "overflow"
+    // ) {
+    //   //don't activate another cup while current is active
+    //   // if (cups[currentId].quantity > 0) {
+    //   findNextEmpy(currentId);
+    //   // }
+    // }
+    let isACupActive = null;
+    isACupActive = cups.find(cup => cup.active);
+    if (isACupActive !== "undefined") {
+      findNextEmpy(currentId);
     }
   };
 
