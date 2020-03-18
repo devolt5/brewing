@@ -5,7 +5,12 @@ import button_active from "../../assets/button_active.svg";
 import button_inactive from "../../assets/button_inactive.svg";
 import button_trash from "../../assets/button_trash.svg";
 
-export default function Coffeemachine({ cups, activeCup, handleCupButton }) {
+export default function Coffeemachine({
+  cups,
+  activeCup,
+  handleCupButton,
+  handleCupClick
+}) {
   //controls the filling of cups
   const platform = [{ id: 0 }, { id: 1 }, { id: 2 }, { id: 3 }];
 
@@ -36,7 +41,7 @@ export default function Coffeemachine({ cups, activeCup, handleCupButton }) {
       {platform.map(platformSlot => (
         <div
           className="startButton"
-          onClick={handleCupButton}
+          onClick={() => handleCupButton(platformSlot.id)}
           plattformid={platformSlot.id}
           style={
             getCupStatus(platformSlot.id) === "running"
@@ -55,6 +60,7 @@ export default function Coffeemachine({ cups, activeCup, handleCupButton }) {
           key={cup.id}
           id={cup.id}
           quantity={cup.quantity}
+          handleCupClick={() => handleCupClick(cup.id)}
           type={cup.type}
           active={cups.indexOf(cup) === activeCup ? true : false}
           fillLevel={cup.fillLevel}

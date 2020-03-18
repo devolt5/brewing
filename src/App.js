@@ -72,6 +72,26 @@ function App() {
           updateCupsProps({ status: "overflow" }, cup.id);
         }
       }
+      //pseudo filling used as a counter for icon
+      if (cup.status === "deleted") {
+        let newFillLevel = cup.fillLevel + 1;
+        updateCupsProps({ fillLevel: newFillLevel }, cup.id);
+        if (cup.fillLevel === 10) {
+          //reset cup
+          setCups(cups => {
+            const currentCup = {
+              ...cups[cup.id],
+              quantity: 0,
+              type: null,
+              correct: false,
+              fillLevel: 0,
+              status: "empty"
+            };
+            cups[cup.id] = currentCup;
+            return [...cups];
+          });
+        }
+      }
     });
   }, 50);
 
@@ -161,12 +181,16 @@ function App() {
     }
   };
 
-  //handle Start/Stop Button
-  const handleCupButton = event => {
-    //FIXME checks not itself!!!
+  const handleCupClick = id => {
+    setActiveCup(id);
+    if (cups[id].quantity !== 0) {
+      updateCupsProps({ quantity: 0, status: "deleted", fillLevel: 0 }, id);
+    }
+  };
 
-    //FIXME get currentId NOT via event but via react var
-    const currentId = event.target.attributes.plattformid.value;
+  //handle Start/Stop Button
+  const handleCupButton = id => {
+    const currentId = id;
     //start cup only when not empty
     if (cups[currentId].quantity === 0) {
       return;
@@ -265,6 +289,7 @@ function App() {
         cups={cups}
         activeCup={activeCup}
         handleCupButton={handleCupButton}
+        handleCupClick={handleCupClick}
       />
       <Controlpanel handleSelectIngredients={handleSelectIngredients} />
     </React.Fragment>

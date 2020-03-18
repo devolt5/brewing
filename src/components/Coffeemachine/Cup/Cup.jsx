@@ -1,13 +1,20 @@
 import React, { useState, useEffect } from "react";
 import "./Cup.css";
 
-export default function Cup({ id, quantity, type, active, fillLevel, status }) {
+export default function Cup({
+  id,
+  quantity,
+  type,
+  active,
+  fillLevel,
+  status,
+  handleCupClick
+}) {
   const activeStyle = {
     backgroundImage: 'url("cup_ready.svg")'
   };
 
   const [size, setSize] = useState();
-  const [dirty, setDirty] = useState(); //appearance if cup is dirty
   const [factor, setFactor] = useState(0.7); //varies between small or large cup
 
   //renders an image with 1 or 2 ingredients inside of cup
@@ -20,19 +27,19 @@ export default function Cup({ id, quantity, type, active, fillLevel, status }) {
 
   //varies between small and large cups
   const cupStyle = {
-    backgroundImage: 'url("cup_'+size+'.svg")'
+    backgroundImage: 'url("cup_' + size + '.svg")'
   };
 
   const dirtyStyle = {
-    backgroundImage: 'url("cup_'+size+'_dirty.svg")'
+    backgroundImage: 'url("cup_' + size + '_dirty.svg")'
   };
 
   useEffect(() => {
-    setSize('small');
+    setSize("small");
     setFactor(0.7);
     if (quantity === 2) {
       setFactor(1);
-      setSize('large');
+      setSize("large");
     }
   }, [quantity]);
 
@@ -43,8 +50,15 @@ export default function Cup({ id, quantity, type, active, fillLevel, status }) {
   //      <div> Spurt
   //      <div> Liquid
   return (
-    <div className="cup" style={active ? activeStyle : (status === "overflow") ? dirtyStyle : cupStyle}>
-      {type !== null ? renderIngredients() : ""}
+    <div
+      className="cup"
+      onClick={handleCupClick}
+      style={
+        active ? activeStyle : status === "overflow" ? dirtyStyle : cupStyle
+      }
+    >
+      {quantity !== 0 ? renderIngredients() : ""}
+      {status === "deleted" ? <img src="trash_icon.svg" /> : ""}
       {active ? (
         ""
       ) : (
