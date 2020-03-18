@@ -32,7 +32,7 @@ function App() {
   const [playerScore, setPlayerScore] = useState(0);
   const [activeCup, setActiveCup] = useState(0);
   const [quantitySetting, setQuantitySetting] = useState(1);
-  const todoLength = 3;
+  const todoLength = 4;
 
   //helper function to update props of current cup in platform
   function updateCupsProps(prop, id) {
@@ -88,6 +88,7 @@ function App() {
         quantity: 0,
         type: null,
         fillLevel: 0,
+        correct: false,
         status: "empty",
         active: true
       },
@@ -97,6 +98,7 @@ function App() {
         quantity: 0,
         type: null,
         fillLevel: 0,
+        correct: false,
         status: "empty",
         active: false
       },
@@ -106,6 +108,7 @@ function App() {
         quantity: 0,
         type: null,
         fillLevel: 0,
+        correct: false,
         status: "empty",
         active: false
       },
@@ -115,6 +118,7 @@ function App() {
         quantity: 0,
         type: null,
         fillLevel: 0,
+        correct: false,
         status: "empty",
         active: false
       }
@@ -159,33 +163,40 @@ function App() {
     if (cups[currentId].quantity === 0) {
       return;
     }
-    //start process only on activeCup
+    //start activeCup
     if (parseInt(currentId) === activeCup) {
-      setCups(cups => {
-        const currentCup = {
-          ...cups[currentId],
-          status: "running"
-        };
-        cups[currentId] = currentCup;
-        return [...cups];
-      });
-    }
-    //handle click when finished
-    if (cups[currentId].status === "finished") {
+      //search, if cup is holding a correct task
       for (let item of todos) {
         if (
           item.type === cups[currentId].type &&
           item.quantity === cups[currentId].quantity
         ) {
+          updateCupsProps({ correct: true }, currentId);
           let index = todos.indexOf(item);
           todos[index] = randomizer(); //replace with new item
           //TODO what to do when the list empties?
           setTodos(todos); //inform react
-          setPlayerScore(playerScore => {
-            return playerScore + 1;
-          });
           break; //delete only one matching task
         }
+      }
+
+      updateCupsProps({ status: "running" }, currentId);
+      // setCups(cups => {
+      //   const currentCup = {
+      //     ...cups[currentId],
+      //     status: "running"
+      //   };
+      //   cups[currentId] = currentCup;
+      //   return [...cups];
+      // });
+    }
+    //handle click when finished
+    if (cups[currentId].status === "finished") {
+      //if cup has correct ingredients
+      if (cups[currentId].correct) {
+        setPlayerScore(playerScore => {
+          return playerScore + 1;
+        });
       }
 
       //reset finished cup
@@ -196,6 +207,7 @@ function App() {
           quantity: 0,
           type: null,
           fillLevel: 0,
+          correct: false,
           status: "empty"
         };
         cups[currentId] = currentCup;
@@ -214,6 +226,7 @@ function App() {
           active: false,
           quantity: 0,
           type: null,
+          correct: false,
           fillLevel: 0,
           status: "empty"
         };
