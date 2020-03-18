@@ -3,9 +3,25 @@ body {
   background-color: #b56048;
 }
 
+p {
+  margin: 0;
+}
+
 #root {
   background-color: #b56048;
   height: 100vh;
   width: 50%;
   margin: 0 auto;
+}
+
+.score {
+  background-color: rgba(255, 255, 255, 0.5);
+  width: 200px;
+  padding: 5px;
+}
+
+.score p {
+  opacity: 0.7;
+  color: #572204;
+  font-weight: 600;
 }

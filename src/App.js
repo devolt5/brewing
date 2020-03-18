@@ -195,7 +195,7 @@ function App() {
       //if cup has correct ingredients
       if (cups[currentId].correct) {
         setPlayerScore(playerScore => {
-          return playerScore + 1;
+          return playerScore + 100;
         });
       }
 
@@ -256,7 +256,10 @@ function App() {
 
   return (
     <React.Fragment>
-      <p>{playerScore}</p>
+      <div className="score">
+        <p>Ergebnis: {playerScore}</p>
+      </div>
+
       <Todolist todos={todos} />
       <Coffeemachine
         cups={cups}
