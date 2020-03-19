@@ -31,7 +31,7 @@ tba
 ## Built With
 
 - [React](http://www.reactjs.org) - ReactJS
-- [npm](https://www.npm.com) - Node Package Manager
+- [npm](https://www.npmjs.com) - Node Package Manager
 
 ## Contributing
 
@@ -52,7 +52,7 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ## Acknowledgments
 
-- This project is purely private
+- This project is purely private and has no economic interests
 - I created it in order to learn some CSS Tricks and State-Management via React
 - I created it mainly for my kids, which are a huge fan of learning apps
 - All graphics and logics are self-made
