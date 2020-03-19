@@ -57,18 +57,25 @@ function App() {
     updateCupsProps({ active: true }, index);
   }
 
-  //interval function which simulates filling of cups in platformSlot
+  //interval function which simulates filling of cups
   useInterval(() => {
     cups.forEach(cup => {
+      let levelOverflow = 200;
+      let levelFinished = 160;
+      //double for a large cup
+      if (cup.quantity === 2) {
+        levelOverflow = levelOverflow * 2;
+        levelFinished = levelFinished * 2;
+      }
       if (cup.status === "running" || cup.status === "finished") {
-        if (cup.fillLevel < 100) {
+        if (cup.fillLevel < levelOverflow) {
           let newFillLevel = cup.fillLevel + 1;
           updateCupsProps({ fillLevel: newFillLevel }, cup.id);
         }
-        if (cup.fillLevel === 80) {
+        if (cup.fillLevel === levelFinished) {
           updateCupsProps({ status: "finished" }, cup.id);
         }
-        if (cup.fillLevel >= 100) {
+        if (cup.fillLevel >= levelOverflow) {
           updateCupsProps({ status: "overflow" }, cup.id);
         }
       }
@@ -76,6 +83,7 @@ function App() {
       if (cup.status === "deleted") {
         let newFillLevel = cup.fillLevel + 1;
         updateCupsProps({ fillLevel: newFillLevel }, cup.id);
+        //approx. 500ms
         if (cup.fillLevel === 10) {
           //reset cup
           setCups(cups => {
