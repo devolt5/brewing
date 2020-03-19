@@ -156,7 +156,8 @@ function App() {
     const randomType = types[Math.floor(Math.random() * 3)];
     return {
       quantity: randomQuantity,
-      type: randomType
+      type: randomType,
+      style: "item slidein"
     };
   };
 
@@ -205,9 +206,25 @@ function App() {
         ) {
           updateCupsProps({ correct: true }, currentId);
           let index = todos.indexOf(item);
-          todos[index] = randomizer(); //replace with new item
-          //TODO what to do when the list empties?
-          setTodos(todos); //inform react
+          console.log(index);
+
+          //change class, so that new items slides in
+          setTodos(todos => {
+            const currentTodo = {
+              ...todos[index],
+              style: "item"
+            };
+            todos[index] = currentTodo;
+            return [...todos];
+          });
+
+          //take some time to change class
+          setTimeout(() => {
+            todos[index] = randomizer(); //replace with new item
+            //TODO what to do when the list empties?
+            setTodos(todos); //inform react
+          }, 300);
+
           break; //delete only one matching task
         }
       }

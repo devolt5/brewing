@@ -7,7 +7,11 @@ export default function Todolist({ todos }) {
     <div className="todolist">
       <div className="bar"></div>
       {todos.map(item => (
-        <Todoitem quantity={item.quantity} type={item.type} />
+        <Todoitem
+          quantity={item.quantity}
+          styleClass={item.style}
+          type={item.type}
+        />
       ))}
     </div>
   );
